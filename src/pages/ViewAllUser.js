@@ -33,7 +33,6 @@ const ViewAllUser = () => {
               <View style={styles.flatList}>
                 <Text> ID: {item.id}</Text>
                 <Text> Nome: {item.nome}</Text>
-                <Text>********************************************************************</Text>
               </View>
 
             )}
@@ -55,7 +54,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   flatList: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     justifyContent: "space-between",
     alignItems: "center",
     padding: 15,

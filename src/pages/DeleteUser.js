@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { View, Alert, SafeAreaView } from "react-native";
 import Mytextinput from "./components/Mytextinput";
 import Mybutton from "./components/Mybutton";
+import { db } from "../../firebaseConfig";
 import { useRoute } from "@react-navigation/native";
-import { deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 
 const DeleteUser = ({ navigation }) => {
   const route = useRoute();
@@ -28,6 +29,8 @@ const DeleteUser = ({ navigation }) => {
           <Mytextinput
             placeholder="ID do autor"
             style={{ padding: 10 }}
+            value={id_autor}
+            onChangeText={setId_autor}
           />
           <Mybutton title="Excluir Autor" onPress={excluirAutor}/>
         </View>

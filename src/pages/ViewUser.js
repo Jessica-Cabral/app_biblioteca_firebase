@@ -13,14 +13,12 @@ import Mytextinput from "./components/Mytextinput";
 import Mybutton from "./components/Mybutton";
 import { db } from "../../firebaseConfig";
 import { getDocs, collection, query, where } from "firebase/firestore";
-import UpdateUser from "./UpdateUser";
-import DeleteUser from "./DeleteUser";
 
-const ViewUser = () => {
+const ViewUser = ({ navigation }) => {
   const [autor, setAutor] = useState("");
   const [listaAutores, setListaAutores] = useState([]);
 
-  async function consultarAutor({navigation}) {
+  async function consultarAutor() {
     try {
       const colecao = collection(db, "Autor");
       const q = query(colecao, where("nome", "==", autor));
@@ -53,29 +51,31 @@ const ViewUser = () => {
           >
             <FlatList
               style={{ marginTop: 30 }}
-              contentContainerStyle={{ paddingHorizontal: 20 }}
+              contentContainerStyle={{ paddingHorizontal: 5 }}
               data={listaAutores}
               renderItem={({ item }) => (
                 <View style={styles.flatList}>
                   <Text> ID: {item.id}</Text>
                   <Text> Nome: {item.nome}</Text>
-                  <Button
-                    title="Atualizar"
-                    onPress={() =>
-                      navigation.navigate("Update", {
-                        id: `${item.id}`,
-                        nome: `${item.nome}`,
-                      })
-                    }
-                  />
-                  <Button
-                    title="Excluir"
-                    onPress={() =>
-                      navigation.navigate("Delete", {
-                        id: `${item.id}`,
-                      })
-                    }
-                  />
+                  <View style={styles.botoesFlaList}>
+                    <Button
+                      title="Atualizar"
+                      onPress={() =>
+                        navigation.navigate("Update", {
+                          id: `${item.id}`,
+                          nome: `${item.nome}`,
+                        })
+                      }
+                    />
+                    <Button
+                      title="Excluir"
+                      onPress={() =>
+                        navigation.navigate("Delete", {
+                          id: `${item.id}`,
+                        })
+                      }
+                    />
+                  </View>
                 </View>
               )}
             />
@@ -87,17 +87,7 @@ const ViewUser = () => {
 };
 
 const styles = StyleSheet.create({
-  textheader: {
-    color: "#111",
-    fontSize: 12,
-    fontWeight: "700",
-  },
-  textbottom: {
-    color: "#111",
-    fontSize: 18,
-  },
   flatList: {
-    //flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     padding: 15,
@@ -108,6 +98,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
+  },
+  botoesFlaList: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop:15,
+    gap:20
   },
 });
 export default ViewUser;
