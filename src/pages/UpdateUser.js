@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   View,
   ScrollView,
@@ -7,12 +7,32 @@ import {
   SafeAreaView,
   Text,
 } from "react-native";
-
 import Mytext from "./components/Mytext";
 import Mytextinput from "./components/Mytextinput";
 import Mybutton from "./components/Mybutton";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
+import { useRoute } from "@react-navigation/native";
 
 const UpdateUser = ({ navigation }) => {
+  const route = useRoute()
+  const {id, nome} = route.params;
+  const [id_autor, setId_autor] = useState(id);
+  const [autor, setAutor] = useState(nome)
+
+
+  async function atualizarAutor(){
+    try {
+      const atualizar = doc(db, 'Autor', id_autor);
+      await updateDoc (atualizar, {nome: autor});
+      Alert.alert("Informações", "Autor alterado com sucesso!");
+      navigation.navigate('HomeScreen');
+    } catch (error) {
+      Alert.alert("Atenção", "Erro ao alterar autor!")
+      console.log(error)
+    }
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -24,16 +44,13 @@ const UpdateUser = ({ navigation }) => {
             >
               <Mytext text="Filtro de Autor" />
               <Mytextinput
-                placeholder="Entre com o ID do autor"
-                style={{ padding: 10 }}
-              />
-              <Mybutton title="Buscar Usuário" />
-              <Mytextinput
                 placeholder="Entre com o Nome"
                 style={{ padding: 10 }}
+                value={autor}
+                onChangeText={setAutor}
               />
 
-              <Mybutton title="Atualizar Autor" />
+              <Mybutton title="Atualizar Autor" onPress={atualizarAutor} />
             </KeyboardAvoidingView>
           </ScrollView>
         </View>
